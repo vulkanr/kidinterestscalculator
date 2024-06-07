@@ -4,38 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grow Your Money!</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="style.css"> </head>
 <body>
     <h1>Grow Your Money!</h1>
     <div class="calculator">
-        <h2>Let's see how your savings grow!</h2>
+        <h2>Let's see how your savings grow with compounding interest!</h2>
         <form id="interest-form">
-            <label for="income">Income/Allowance:</label>
-            <input type="number" id="income" min="0" required>
+            <label for="current-amount">How much money do you currently have in your account?</label>
+            <input type="number" step="1" id="current-amount" value = "0" required><br><br>
 
-            <label for="savings">Save what % of your income?</label>
-            <input type="range" min="0" max="100" value="50" id="savings-percent" step="1">
-            <span id="savings-percent-value">50%</span>
-
-            <label for="interest">Interest Rate:</label>
-            <select id="interest-rate">
-                <option value="0.01">Low (1%)</option>
-                <option value="0.03">Medium (3%)</option>
-                <option value="0.05">High (5%)</option>
+            <label for="income-cadence">How frequently do you receive your allowence or any other regular income?</label>
+            <select id="income-cadence">
+                <option value="weekly">Weekly</option>
+                <option value="bi-weekly">Bi-weekly</option>
+                <option value="monthly">Monthly</option>
             </select>
 
-            <label for="years">Years to Save:</label>
-            <input type="number" id="years" min="1" value="5" required>
+            <label for="income-amount">How much money do you get each time?</label>
+            <input type="number" step="1" id="income-amount" value="10" required>
+
+            <label for="savings">How much of it do you plan to keep for saving?</label>
+            <input type="number" step="1" id="savings" value = "0" required>
+
+            <label for="interest-rate">How much interest do you expect to make on your savings (%)?:</label>
+            <input type="number" step="0.10" id="interest-rate" value = "5"  required>
+
+            <label for="years">For how many years:</label>
+            <input type="number" step="1" id="years" value = "10" required>
+
+            <p hidden><label for="compounding-frequency">Compounding Frequency:</label></p>
+            <select hidden id="compounding-frequency">
+                <option value="1">Annually</option>
+                <option value="2">Semi-annually</option>
+                <option value="4">Quarterly</option>
+                <option value="12" selected>Monthly</option>
+            </select>
 
             <button type="submit">Calculate!</button>
         </form>
         <div id="results">
-            <p>Total Saved: $<span id="total-saved"></span></p>
-            <p>Interest Earned: $<span id="interest-earned"></span></p>
+            <p>At the end of the period you will have: $<span id="total-saved"></span></p>
+            <p>Out of that amount the interest earned is: $<span id="interest-earned"></span></p>
         </div>
     </div>
     <script src="script.js"></script>
 </body>
 </html>
-

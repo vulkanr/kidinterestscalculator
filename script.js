@@ -1,32 +1,52 @@
 const form = document.getElementById('interest-form');
-const incomeInput = document.getElementById('income');
-const savingsRange = document.getElementById('savings-percent');
-const savingsValue = document.getElementById('savings-percent-value');
+const incomeCadenceSelect = document.getElementById('income-cadence');
+const incomeAmountInput = document.getElementById('income-amount');
+const currentAmountInput = document.getElementById('current-amount');
+const savingsInput = document.getElementById('savings'); 
 const interestRateSelect = document.getElementById('interest-rate');
 const yearsInput = document.getElementById('years');
 const totalSavedSpan = document.getElementById('total-saved');
 const interestEarnedSpan = document.getElementById('interest-earned');
 
-savingsRange.addEventListener('input', function() {
-  savingsValue.textContent = this.value + '%';
-});
-
 form.addEventListener('submit', function(event) {
   event.preventDefault();
 
-  const income = parseFloat(incomeInput.value);
-  const savingsPercent = parseFloat(savingsRange.value) / 100;
-  const interestRate = parseFloat(interestRateSelect.value);
+  const incomeCadence = incomeCadenceSelect.value;
+  const incomeAmount = parseFloat(incomeAmountInput.value);
+  const currentAmount = parseFloat(currentAmountInput.value);
+  const savingsAmount = parseFloat(savingsInput.value); // get absolute amount
+  const interestRate = parseFloat(interestRateSelect.value)/100.0;
   const years = parseInt(yearsInput.value);
+  const compoundingFrequency = document.getElementById('compounding-frequency').value;
+  let total = currentAmount ;
+  let totalInterest = 0;
+  let monthlyIncome = savingsAmount
+  switch (incomeCadence) {
+    case "weekly":
+      monthlyIncome *= 4;
+      break;
+    case "bi-weekly":
+      monthlyIncome *= 2;
+      break;
+  }
 
-  let total = income * savingsPercent;
-  let interestEarned = 0;
+  const months = years * 12
+  const monthsPerInterestPeriod = 12/compoundingFrequency
+  let monthsPassed = 0
+  let accruedInterest = 0
+  for (let i = 0; i < months; i++) {
+    monthsPassed++
+    accruedInterest += total * (interestRate / 12.0)
 
-  for (let i = 1; i <= years; i++) {
-    interestEarned += total * interestRate;
-    total += interestEarned + (income * savingsPercent);
+    if (monthsPassed >= monthsPerInterestPeriod) {
+      total += accruedInterest
+      totalInterest += accruedInterest
+      accruedInterest = 0
+      monthsPassed = 0
+    }
+    total += monthlyIncome
   }
 
   totalSavedSpan.textContent = total.toFixed(2);
-  interestEarnedSpan.textContent = interest
-
+  interestEarnedSpan.textContent = totalInterest.toFixed(2);
+});
